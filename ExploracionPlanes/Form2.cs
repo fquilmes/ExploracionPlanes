@@ -32,6 +32,7 @@ namespace ExploracionPlanes
         PrintPreviewDialog printPreviewDialog1 = new PrintPreviewDialog();
         VMS.TPS.Common.Model.API.Application app;
         static string pathParEstructuras = Properties.Settings.Default.Path + @"\paresEstructuras\";
+        static string pathPrescripciones = Properties.Settings.Default.Path + @"\prescripciones\";
         public static string pathReportesJson = Properties.Settings.Default.Path + @"\Reportes\Json\";
         string plantillaNotaOriginal = "";
 
@@ -230,10 +231,6 @@ namespace ExploracionPlanes
             {
                 prescripcion = ((PlanSetup)planSeleccionado()).TotalPrescribedDose.Dose / 100;
             }
-            /*else if (planSeleccionado().GetType() == typeof(ExternalPlanSetup))
-            {
-                prescripcion = ((ExternalPlanSetup)planSeleccionado()).TotalPrescribedDose.Dose / 100;
-            }*/
             else
             {
                 foreach (PlanSetup planS in ((PlanSum)planSeleccionado()).PlanSetups) //asumo que todos los planes suman con peso 1. Más adelante se puede mejorar con PlanSumComponents
@@ -246,7 +243,7 @@ namespace ExploracionPlanes
             {
                 DGV_Prescripciones.Rows.Add();
                 DGV_Prescripciones.Rows[DGV_Prescripciones.Rows.Count - 1].Cells[0].Value = estructura.nombre;
-                DGV_Prescripciones.Rows[DGV_Prescripciones.Rows.Count - 1].Cells[1].Value = prescripcionPredefinida(estructura, plantilla, Math.Round(prescripcion, 2));
+                DGV_Prescripciones.Rows[DGV_Prescripciones.Rows.Count - 1].Cells[1].Value = prescripcionPredefinida(estructura, plantilla, Math.Round(prescripcion, 2),paciente,planSeleccionado());
             }
             DGV_Prescripciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             DGV_Prescripciones.Columns[0].ReadOnly = true;
@@ -300,7 +297,7 @@ namespace ExploracionPlanes
                         {
                             (DGV_Estructuras.Rows[i].Cells[1]).Value = "";
                         }
-                        
+
                     }
                     else
                     {
@@ -530,6 +527,7 @@ namespace ExploracionPlanes
             aplicarPrescripciones();
             llenarDGVAnalisis();
             escribirArchivoParEstructuras(listaParesEstructuras(), nombreArchivoParEstructura(paciente, planSeleccionado()));
+            escribirArchivoPrescripciones(listaPrescripcion(), nombreArchivoPrescripciones(paciente, planSeleccionado()));
 
         }
 
@@ -677,6 +675,25 @@ namespace ExploracionPlanes
             return lista;
         }
 
+        private List<prescripcion> listaPrescripcion()
+        {
+            List<prescripcion> lista = new List<prescripcion>();
+            foreach (DataGridViewRow fila in DGV_Prescripciones.Rows)
+            {
+                prescripcion presc = new prescripcion()
+                {
+                    estructura = fila.Cells[0].Value.ToString(),
+                };
+                if (fila.Cells[1].Value != null)
+                {
+                    presc.dosis = Convert.ToDouble(fila.Cells[1].Value);
+                }
+
+                lista.Add(presc);
+            }
+            return lista;
+        }
+
         public static void escribirArchivoParEstructuras(List<parEstructura> lista, string archivo)
         {
 
@@ -689,6 +706,19 @@ namespace ExploracionPlanes
                 }
             }
         }
+
+        public static void escribirArchivoPrescripciones(List<prescripcion> lista, string archivo)
+        {
+            using (StreamWriter file = new StreamWriter(archivo))
+            {
+                int i = 0;
+                foreach (prescripcion presc in lista)
+                {
+                    file.WriteLine(presc.estructura + "," + presc.dosis);
+                }
+            }
+        }
+
 
         public static List<parEstructura> leerArchivoParEstructura(string archivo)
         {
@@ -705,6 +735,26 @@ namespace ExploracionPlanes
                         structureID = aux[1],
                     };
                     lista.Add(par);
+                }
+            }
+            return lista;
+        }
+
+        public static List<prescripcion> leerArchivoPrescripcion(string archivo)
+        {
+            List<prescripcion> lista = new List<prescripcion>();
+            using (StreamReader file = new StreamReader(archivo))
+            {
+
+                while (!file.EndOfStream)
+                {
+                    string[] aux = file.ReadLine().Split(',');
+                    prescripcion presc = new prescripcion()
+                    {
+                        estructura = aux[0],
+                        dosis = Convert.ToDouble(aux[1]),
+                    };
+                    lista.Add(presc);
                 }
             }
             return lista;
@@ -731,6 +781,26 @@ namespace ExploracionPlanes
             else
             {
                 nombre = pathParEstructuras + paciente.Id + ((PlanSum)plan).StructureSet.Id + ".txt";
+            }
+            return nombre;
+        }
+
+        public static string nombreArchivoPrescripciones(Patient paciente, PlanningItem plan)
+        {
+
+            if (!Directory.Exists(pathPrescripciones))
+            {
+                Directory.CreateDirectory(pathPrescripciones);
+            }
+            string nombre;
+
+            if (plan is PlanSetup)
+            {
+                nombre = pathPrescripciones + paciente.Id + ((PlanSetup)plan).StructureSet.Id + ".txt";
+            }
+            else
+            {
+                nombre = pathPrescripciones + paciente.Id + ((PlanSum)plan).StructureSet.Id + ".txt";
             }
             return nombre;
         }
@@ -860,9 +930,17 @@ namespace ExploracionPlanes
             }
         }
 
-        public static double prescripcionPredefinida(Estructura estructura, Plantilla plantilla, double prescripcion)
+        public static double prescripcionPredefinida(Estructura estructura, Plantilla plantilla, double prescripcion, Patient paciente, PlanningItem planSeleccionado)
         {
-            if (plantilla.nombre.Contains("Cabeza"))
+            if (File.Exists(nombreArchivoPrescripciones(paciente, planSeleccionado)))
+            {
+                List<prescripcion> lista = leerArchivoPrescripcion(nombreArchivoPrescripciones(paciente, planSeleccionado));
+                if (lista.Any(p=>p.estructura==estructura.nombre))
+                {
+                    return lista.First(p => p.estructura == estructura.nombre).dosis;
+                }
+            }
+            else if (plantilla.nombre.Contains("Cabeza"))
             {
                 if (estructura.nombre.Contains("Mid"))
                 {
@@ -883,9 +961,17 @@ namespace ExploracionPlanes
                 {
                     return 40.05;
                 }
+                else if (prescripcion == 40.05 && estructura.nombre.Contains("Sb"))
+                {
+                    return 45;
+                }
                 else if (prescripcion == 60 && new[] { "WB", "CW", "IMN", "Ax", "Sclav" }.Any(c => estructura.nombre.Contains(c)))
                 {
                     return 50;
+                }
+                if (prescripcion == 50 && estructura.nombre.Contains("Sb"))
+                {
+                    return 60;
                 }
             }
             return prescripcion;

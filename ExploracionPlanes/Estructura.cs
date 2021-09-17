@@ -142,6 +142,12 @@ namespace ExploracionPlanes
         public string structureID { get; set; }
     }
 
+    public struct prescripcion
+    {
+        public string estructura { get; set; }
+        public double dosis { get; set; }
+    }
+
     
 
 

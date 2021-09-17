@@ -246,7 +246,7 @@ namespace ExploracionPlanes
             {
                 DGV_Prescripciones.Rows.Add();
                 DGV_Prescripciones.Rows[DGV_Prescripciones.Rows.Count - 1].Cells[0].Value = estructura.nombre;
-                DGV_Prescripciones.Rows[DGV_Prescripciones.Rows.Count - 1].Cells[1].Value = Form2.prescripcionPredefinida(estructura, plantilla, Math.Round(prescripcion, 2));
+                DGV_Prescripciones.Rows[DGV_Prescripciones.Rows.Count - 1].Cells[1].Value = Form2.prescripcionPredefinida(estructura, plantilla, Math.Round(prescripcion, 2),paciente,planSeleccionado());
             }
             DGV_Prescripciones.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             DGV_Prescripciones.Columns[0].ReadOnly = true;
@@ -291,7 +291,15 @@ namespace ExploracionPlanes
                 {
                     if (existeArchivoPar)
                     {
-                        DGV_Estructuras.Rows[i].Cells[1].Value = Form2.structureDeEstructura(DGV_Estructuras.Rows[i].Cells[0].Value.ToString(), lista);
+                        string structureID = Form2.structureDeEstructura(DGV_Estructuras.Rows[i].Cells[0].Value.ToString(), lista);
+                        if (((DataGridViewComboBoxCell)DGV_Estructuras.Rows[i].Cells[1]).Items.Contains(structureID))
+                        {
+                            DGV_Estructuras.Rows[i].Cells[1].Value = structureID;
+                        }
+                        else
+                        {
+                            (DGV_Estructuras.Rows[i].Cells[1]).Value = "";
+                        }
                     }
                     else
                     {
