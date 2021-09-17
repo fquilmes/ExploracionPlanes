@@ -23,7 +23,7 @@ namespace ExploracionPlanes
         Patient paciente;
         Course curso;
         PlanningItem plan;
-        PlanningItem planMod=null;
+        PlanningItem planMod = null;
         User usuario;
         Plantilla plantilla;
         Structure ptvCondicion;
@@ -291,7 +291,16 @@ namespace ExploracionPlanes
                 {
                     if (existeArchivoPar)
                     {
-                        DGV_Estructuras.Rows[i].Cells[1].Value = structureDeEstructura(DGV_Estructuras.Rows[i].Cells[0].Value.ToString(), lista);
+                        string structureID = structureDeEstructura(DGV_Estructuras.Rows[i].Cells[0].Value.ToString(), lista);
+                        if (((DataGridViewComboBoxCell)DGV_Estructuras.Rows[i].Cells[1]).Items.Contains(structureID))
+                        {
+                            DGV_Estructuras.Rows[i].Cells[1].Value = structureID;
+                        }
+                        else
+                        {
+                            (DGV_Estructuras.Rows[i].Cells[1]).Value = "";
+                        }
+                        
                     }
                     else
                     {
@@ -317,16 +326,16 @@ namespace ExploracionPlanes
         private void llenarDGVAnalisis()
         {
             plantilla.nota = plantillaNotaOriginal;
-            if (plan==null)
+            if (plan == null)
             {
                 plan = planSeleccionado();
             }
-            if (plan is PlanSetup && ((PlanSetup)plan).Dose==null)
+            if (plan is PlanSetup && ((PlanSetup)plan).Dose == null)
             {
                 MessageBox.Show("El plan no está calculado");
                 return;
             }
-            else if (plan is PlanSum && ((PlanSum)plan).Dose==null)
+            else if (plan is PlanSum && ((PlanSum)plan).Dose == null)
             {
                 MessageBox.Show("El plan no está calculado");
                 return;
@@ -404,7 +413,7 @@ namespace ExploracionPlanes
                             double alfaBeta = 3;
                             foreach (DataGridViewRow fila in DGV_Estructuras.Rows)
                             {
-                                if (fila.Cells[1].Value!=null && fila.Cells[1].Value.ToString() == estructura.Id)
+                                if (fila.Cells[1].Value != null && fila.Cells[1].Value.ToString() == estructura.Id)
                                 {
                                     alfaBeta = Convert.ToDouble(fila.Cells[2].Value);
                                     break;
@@ -834,7 +843,7 @@ namespace ExploracionPlanes
             }
             else
             {
-                if (DGV_Estructuras.Columns.Count==3)
+                if (DGV_Estructuras.Columns.Count == 3)
                 {
                     DGV_Estructuras.Columns.RemoveAt(2);
                     //DGV_Estructuras.Columns[2].Visible = false;
@@ -882,7 +891,7 @@ namespace ExploracionPlanes
             return prescripcion;
         }
 
-        
+
 
         /*public static bool habilitarAdvertenciaPrescripcion(PlanSetup plan, Plantilla plantilla)
         {
