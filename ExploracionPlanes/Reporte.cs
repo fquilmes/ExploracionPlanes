@@ -98,14 +98,29 @@ namespace ExploracionPlanes
             {
                 tabla.AddRow();
             }
-            tabla.Rows[0].Cells[0].Add(Estilos.etiquetaYValor("Paciente", paciente));
-            tabla.Rows[1].Cells[0].Add(Estilos.etiquetaYValor("HC", IDPaciente));
-            tabla.Rows[2].Cells[0].Add(Estilos.etiquetaYValor("Equipo", equipo));
-            tabla.Rows[3].Cells[0].Add(Estilos.etiquetaYValor("Plantilla", nombrePlantilla));
-            tabla.Rows[4].Cells[0].Add(Estilos.etiquetaYValor("Realizado por", realizadoPor));
-            tabla.Rows[5].Cells[0].Add(Estilos.etiquetaYValor("Fecha", fecha));
-            tabla.Rows[6].Cells[0].Add(Estilos.etiquetaYValor("Nombre del Plan", plan));
-            tabla.Rows[7].Cells[0].Add(Estilos.etiquetaYValor("Dosis de prescripción (Gy)", presc));
+            if (nombrePlantilla.Contains("SunRise"))
+            {
+                tabla.Rows[0].Cells[0].Add(Estilos.etiquetaYValor("Patient", paciente));
+                tabla.Rows[1].Cells[0].Add(Estilos.etiquetaYValor("ID", IDPaciente));
+                tabla.Rows[2].Cells[0].Add(Estilos.etiquetaYValor("Machine", equipo));
+                tabla.Rows[3].Cells[0].Add(Estilos.etiquetaYValor("Template", nombrePlantilla));
+                tabla.Rows[4].Cells[0].Add(Estilos.etiquetaYValor("User", realizadoPor));
+                tabla.Rows[5].Cells[0].Add(Estilos.etiquetaYValor("Date", fecha));
+                tabla.Rows[6].Cells[0].Add(Estilos.etiquetaYValor("Plan Name", plan));
+                tabla.Rows[7].Cells[0].Add(Estilos.etiquetaYValor("Prescribed Dose [Gy]", presc));
+            }
+            else
+            {
+                tabla.Rows[0].Cells[0].Add(Estilos.etiquetaYValor("Paciente", paciente));
+                tabla.Rows[1].Cells[0].Add(Estilos.etiquetaYValor("HC", IDPaciente));
+                tabla.Rows[2].Cells[0].Add(Estilos.etiquetaYValor("Equipo", equipo));
+                tabla.Rows[3].Cells[0].Add(Estilos.etiquetaYValor("Plantilla", nombrePlantilla));
+                tabla.Rows[4].Cells[0].Add(Estilos.etiquetaYValor("Realizado por", realizadoPor));
+                tabla.Rows[5].Cells[0].Add(Estilos.etiquetaYValor("Fecha", fecha));
+                tabla.Rows[6].Cells[0].Add(Estilos.etiquetaYValor("Nombre del Plan", plan));
+                tabla.Rows[7].Cells[0].Add(Estilos.etiquetaYValor("Dosis de prescripción (Gy)", presc));
+            }
+           
 
             tabla.Rows[0].Cells[1].MergeDown = 7;
             Paragraph parrafoImage = new Paragraph();

@@ -289,7 +289,7 @@ namespace ExploracionPlanes
                     if (existeArchivoPar)
                     {
                         string structureID = structureDeEstructura(DGV_Estructuras.Rows[i].Cells[0].Value.ToString(), lista);
-                        if (((DataGridViewComboBoxCell)DGV_Estructuras.Rows[i].Cells[1]).Items.Contains(structureID))
+                        if (structureID!= null && ((DataGridViewComboBoxCell)DGV_Estructuras.Rows[i].Cells[1]).Items.Contains(structureID))
                         {
                             DGV_Estructuras.Rows[i].Cells[1].Value = structureID;
                         }
@@ -528,7 +528,14 @@ namespace ExploracionPlanes
             llenarDGVAnalisis();
             escribirArchivoParEstructuras(listaParesEstructuras(), nombreArchivoParEstructura(paciente, planSeleccionado()));
             escribirArchivoPrescripciones(listaPrescripcion(), nombreArchivoPrescripciones(paciente, planSeleccionado()));
-
+            if (plantilla.nombre.Contains("SunRise"))
+            {
+                DGV_Análisis.Columns[0].HeaderText = "Structure";
+                DGV_Análisis.Columns[1].HeaderText = "Priority";
+                DGV_Análisis.Columns[2].HeaderText = "Metric";
+                DGV_Análisis.Columns[4].HeaderText = "In plan";
+                DGV_Análisis.Columns[5].HeaderText = "Expected";
+            }
         }
 
         private void colorCelda(DataGridViewCell celda, IRestriccion restriccion)
