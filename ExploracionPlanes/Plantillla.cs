@@ -41,6 +41,10 @@ namespace ExploracionPlanes
             }
             return plantilla;
         }
+        public Plantilla()
+        {
+
+        }
 
         public void guardar(bool edita, Plantilla plantillaAEditar = null)
         {
