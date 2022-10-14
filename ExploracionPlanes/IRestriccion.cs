@@ -47,5 +47,6 @@ namespace ExploracionPlanes
 
         bool cumpleCondicion(PlanningItem plan);
         
+        
     }
 }

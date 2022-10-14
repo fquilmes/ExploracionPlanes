@@ -60,7 +60,15 @@ namespace ExploracionPlanes
                 {
                     menorOmayor = ">";
                 }
-                string valorEsperadoString = menorOmayor + restriccion.valorEsperado + restriccion.unidadValor;
+                string valorEsperadoString;
+                if (Double.IsNaN(restriccion.valorEsperado))
+                {
+                    valorEsperadoString = "Reportar";
+                }
+                else
+                {
+                    valorEsperadoString = menorOmayor + restriccion.valorEsperado + restriccion.unidadValor;
+                }
                 if (!Double.IsNaN(restriccion.valorTolerado))
                 {
                     valorEsperadoString += " (" + restriccion.valorTolerado + restriccion.unidadValor + ")";

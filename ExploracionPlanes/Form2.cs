@@ -391,7 +391,16 @@ namespace ExploracionPlanes
                     {
                         menorOmayor = ">";
                     }
-                    string valorEsperadoString = menorOmayor + restriccion.valorEsperado + restriccion.unidadValor;
+                    string valorEsperadoString;
+                    if (Double.IsNaN(restriccion.valorEsperado))
+                    {
+                        valorEsperadoString = "Reportar";
+                    }
+                    else
+                    {
+                        valorEsperadoString = menorOmayor + restriccion.valorEsperado + restriccion.unidadValor;
+                    }
+                    
                     if (!Double.IsNaN(restriccion.valorTolerado))
                     {
                         valorEsperadoString += " (" + restriccion.valorTolerado + restriccion.unidadValor + ")";
@@ -540,7 +549,11 @@ namespace ExploracionPlanes
 
         private void colorCelda(DataGridViewCell celda, IRestriccion restriccion)
         {
-            if (restriccion.cumple() == 0)
+            if (restriccion.valorEsperado==double.NaN)
+            {
+                
+            }
+            else if (restriccion.cumple() == 0)
             {
                 celda.Style.BackColor = System.Drawing.Color.LightGreen;
             }

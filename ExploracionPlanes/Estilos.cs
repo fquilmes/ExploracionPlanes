@@ -11,6 +11,8 @@ namespace ExploracionPlanes
     {
         public static void definirEstilos(Document doc)
         {
+            doc.DefaultPageSetup.LeftMargin = 20;
+            //doc.DefaultPageSetup.RightMargin = 10;
             var texto = doc.AddStyle("Texto", StyleNames.Normal);
             texto.ParagraphFormat.Font.Name = "Arial";
             texto.ParagraphFormat.Font.Color = Colors.Black;

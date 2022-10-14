@@ -36,6 +36,7 @@ namespace ExploracionPlanes
 
         public Main(bool _hayContext = false, Patient _pacienteContext = null, PlanningItem _planContext = null, User _usuarioContext = null, IEnumerable<PlanSum> _planSumsContext = null, IEnumerable<PlanSetup> _plansContext = null)
         {
+            DesdeCSV.LeerTabla();
             InitializeComponent();
             leerPlantillas();
             hayContext = _hayContext;

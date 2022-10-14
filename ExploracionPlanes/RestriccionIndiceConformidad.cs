@@ -286,5 +286,10 @@ ComboBox CB_UnidadesCorresp, ComboBox CB_EsMenorQue, ComboBox CB_UnidadesValor, 
             }
         }
 
+        public override string ToString()
+        {
+            return etiqueta;
+        }
+
     }
 }

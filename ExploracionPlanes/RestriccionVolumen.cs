@@ -300,6 +300,11 @@ ComboBox CB_UnidadesCorresp, ComboBox CB_EsMenorQue, ComboBox CB_UnidadesValor, 
                 return condicion.CumpleCondicion(plan);
             }
         }
+
+        public override string ToString()
+        {
+            return etiqueta;
+        }
     }
 }
 
