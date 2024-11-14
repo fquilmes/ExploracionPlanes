@@ -242,6 +242,13 @@ namespace ExploracionPlanes
                     texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
                 }
             }
+            else if (campo.MLCPlanType.Equals(MLCPlanType.IMRT))
+            {
+                if (campo.DoseRate != 600)
+                {
+                    texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
+                }
+            }
             else
             {
                 if (campo.DoseRate != 400)
