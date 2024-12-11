@@ -126,7 +126,7 @@ namespace ExploracionPlanes
                 if (distanciaMaxima(plan.Beams.First().IsocenterPosition, campo.IsocenterPosition) > 0.01)
                 {
                     texto += "\nEl plan tiene más de un isocentro";
-                    if (campo.TreatmentUnit.Id == "D-2300CD" || campo.TreatmentUnit.Id == "Equipo1")
+                    if (campo.TreatmentUnit.Id == "D-2300CD" || campo.TreatmentUnit.Id == "Equipo1" || campo.TreatmentUnit.Id == "EQ2_iX_827")
                     {
                         texto += ". No será posible realizar el 2D/2D match en el equipo. Se sugiere separar en dos planes";
                     }
@@ -227,6 +227,10 @@ namespace ExploracionPlanes
                     }
                 }
             }
+            else if (campo.TreatmentUnit.Id == "QBA_600CD_523" || campo.TreatmentUnit.Id == "EQ2_iX_827")
+            {
+
+            }
 
             else if (campo.EnergyModeDisplayName == "6X-SRS")
             {
@@ -236,13 +240,6 @@ namespace ExploracionPlanes
                 }
             }
             else if (campo.MLCPlanType.Equals(MLCPlanType.VMAT))
-            {
-                if (campo.DoseRate != 600)
-                {
-                    texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
-                }
-            }
-            else if (campo.MLCPlanType.Equals(MLCPlanType.IMRT))
             {
                 if (campo.DoseRate != 600)
                 {
