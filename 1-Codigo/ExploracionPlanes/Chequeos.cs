@@ -246,6 +246,24 @@ namespace ExploracionPlanes
                     texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
                 }
             }
+            else if (campo.ControlPoints.Count > 10)
+            {
+                if (campo.TreatmentUnit.Id == "EQ2_iX_827")
+                {
+                    if (campo.DoseRate != 600)
+                    {
+                        texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
+                    }
+                }
+                else
+                {
+                    if (campo.DoseRate != 400)
+                    {
+                        texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
+                    }
+                }
+                
+            }
             else
             {
                 if (campo.DoseRate != 400)
@@ -543,6 +561,14 @@ namespace ExploracionPlanes
                 }
             }
             else if (camilla.Contains("BL_ICT") && equipo == "D-2300CD")
+            {
+                return true;
+            }
+            else if (camilla.Contains("QFix") && equipo == "EQ2_iX_827")
+            {
+                return true;
+            }
+            else if (camilla.Contains("Unipanel") && equipo == "QBA_600CD_527")
             {
                 return true;
             }

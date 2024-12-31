@@ -113,7 +113,8 @@ namespace ExploracionPlanes
 
         public static List<Plantilla> leerPlantillas()
         {
-            pathDestino = Properties.Settings.Default.Path + @"\Plantillas\";
+            //pathDestino = Properties.Settings.Default.Path + @"\Plantillas\";
+            pathDestino = @"\\10.130.1.253\FisicaQuilmes\_Datos\4 - Protocolos y tablas\Plantillas";
             List<Plantilla> lista = new List<Plantilla>();
             if (Directory.Exists(pathDestino))
             {
