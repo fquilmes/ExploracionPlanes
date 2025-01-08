@@ -56,7 +56,8 @@ namespace ExploracionPlanes
             {
                 File.Delete(plantillaAEditar.path);
             }
-            string fileName = IO.GetUniqueFilename(pathDestino, nombre);
+            //string fileName = IO.GetUniqueFilename(pathDestino, nombre);
+            string fileName = Path.Combine(pathDestino, IO.GetUniqueFilename("", nombre));
             path = fileName;
             IO.writeObjectAsJson(path, this);
             MessageBox.Show("Se ha guardado la plantilla con el nombre: " + Path.GetFileName(path));
