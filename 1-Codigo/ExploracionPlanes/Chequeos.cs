@@ -56,6 +56,32 @@ namespace ExploracionPlanes
             return texto;
         }
 
+        //// Función auxiliar para verificar si un número es entero
+        //private static bool NoEsEntero(double valor)
+        //{
+        //    return (valor - Math.Floor(valor)) >= 0.1;
+        //}
+
+        //public static string isoNoRedondeado(PlanSetup plan)
+        //{
+        //    string texto = "";
+        //    var userOrigin = plan.StructureSet.Image.UserOrigin;
+        //    var posicionIso = plan.Beams.First().IsocenterPosition;
+
+        //    // Calcula la diferencia entre las coordenadas
+        //    double difX = Math.Abs(userOrigin.x - posicionIso.x);
+        //    double difY = Math.Abs(userOrigin.y - posicionIso.y);
+        //    double difZ = Math.Abs(userOrigin.z - posicionIso.z);
+
+        //    // Verifica si las tres diferencias son números enteros
+        //    if (NoEsEntero(difX) || NoEsEntero(difY) || NoEsEntero(difZ))
+        //    {
+        //        texto += "\nLos corrimientos no estan redondeados.";
+        //    }
+
+        //    return texto;
+        //}
+
 
         public static string referencePointTieneLocalizacion(PlanSetup plan)
         {
@@ -216,23 +242,7 @@ namespace ExploracionPlanes
         public static string doseRate(Beam campo)
         {
             string texto = "";
-            if (campo.TreatmentUnit.Id == "2100CMLC")
-            {
-
-                if (campo.DoseRate != 240)
-                {
-
-                    {
-                        texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
-                    }
-                }
-            }
-            else if (campo.TreatmentUnit.Id == "QBA_600CD_523" || campo.TreatmentUnit.Id == "EQ2_iX_827")
-            {
-
-            }
-
-            else if (campo.EnergyModeDisplayName == "6X-SRS")
+            if (campo.EnergyModeDisplayName == "6X-SRS")
             {
                 if (campo.DoseRate != 1000)
                 {
@@ -245,24 +255,6 @@ namespace ExploracionPlanes
                 {
                     texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
                 }
-            }
-            else if (campo.ControlPoints.Count > 10)
-            {
-                if (campo.TreatmentUnit.Id == "EQ2_iX_827")
-                {
-                    if (campo.DoseRate != 600)
-                    {
-                        texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
-                    }
-                }
-                else
-                {
-                    if (campo.DoseRate != 400)
-                    {
-                        texto += "\n" + campo.Id + ": el DoseRate no es el indicado";
-                    }
-                }
-                
             }
             else
             {
@@ -465,7 +457,6 @@ namespace ExploracionPlanes
             {
                 texto += camilla((PlanSetup)plan);
                 texto += origen((PlanSetup)plan);
-                texto += isoCercaDeOrigen((PlanSetup)plan);
                 texto += referencePointTieneLocalizacion((PlanSetup)plan);
                 texto += merge((PlanSetup)plan);
                 texto += chequeosPorCampo((PlanSetup)plan);
@@ -568,7 +559,7 @@ namespace ExploracionPlanes
             {
                 return true;
             }
-            else if (camilla.Contains("Unipanel") && equipo == "QBA_600CD_527")
+            else if (camilla.Contains("Unipanel") && equipo == "QBA_600CD_523")
             {
                 return true;
             }
